@@ -31,131 +31,133 @@
       map = plugin.google.maps.Map.getMap(div);
     }, false);
     function onBtnClicked() {
-      map.showDialog();
+      testGame()
     }
     </script>
   </head>
   <body>
-    <h3>PhoneGap-GoogleMaps-Plugin</h3>
-    <div style="width:100%;height:400px" id="map_canvas"></div>
-    <button id="button">Full Screen</button>
+    <h3>PhoneGap-Sname Game</h3>
+    <button id="button">Start Game</button>
   </body>
     <script>
-        var tableSize = 20
-var table = document.createElement("table");
-function createTbl()
+      function testGame()
 {
-	var row="";
-	for(var j =0;j< tableSize;j++)
+	var tableSize = 20
+	var table = document.createElement("table");
+	function createTbl()
 	{
-		var clm="";
-		for(var i =0;i< tableSize;i++)
-			clm+="<td></td>";
-		row += "<tr>"+clm+"</tr>";
+		var row="";
+		for(var j =0;j< tableSize;j++)
+		{
+			var clm="";
+			for(var i =0;i< tableSize;i++)
+				clm+="<td></td>";
+			row += "<tr>"+clm+"</tr>";
+		}
+		return row;
 	}
-	return row;
-}
-table.innerHTML = createTbl();
-document.body.innerHTML = "";
-document.body.appendChild(table)
+	table.innerHTML = createTbl();
+	document.body.innerHTML = "";
+	document.body.appendChild(table)
 
-var sty = "td {height:25px;width:25px;} "
-sty += "table{border: 5px solid red} "
-sty += ".active{background-color:black} "
-sty += ".food{background-color:#16f55b} "
-dsty = document.createElement("style")
-dsty.innerHTML = sty;
-document.head.appendChild(dsty)
+	var sty = "td {height:25px;width:25px;} "
+	sty += "table{border: 5px solid red} "
+	sty += ".active{background-color:black} "
+	sty += ".food{background-color:#16f55b} "
+	dsty = document.createElement("style")
+	dsty.innerHTML = sty;
+	document.head.appendChild(dsty)
 
-table = document.getElementsByTagName("table")[0]
-document.getElementsByTagName("body")[0].setAttribute("onkeyup","keydir(event)")
+	table = document.getElementsByTagName("table")[0]
+	document.getElementsByTagName("body")[0].setAttribute("onkeyup","keydir(event)")
 
-function keydir(e)
-{
-	if(e.keyCode == 37)
-		direction = "L"
-	else if(e.keyCode == 38)
-		direction = "T"
-	else if(e.keyCode == 39)
-		direction = "R"
-	else if(e.keyCode == 40)
-		direction = "B"
-}
+	function keydir(e)
+	{
+		if(e.keyCode == 37)
+			direction = "L"
+		else if(e.keyCode == 38)
+			direction = "T"
+		else if(e.keyCode == 39)
+			direction = "R"
+		else if(e.keyCode == 40)
+			direction = "B"
+	}
 
-var snake = [[0,2],[1,2],[2,2],[3,2]]
-var active = [3,2]
-var direction = "R"; // L,R,T,B
+	var snake = [[0,2],[1,2],[2,2],[3,2]]
+	var active = [3,2]
+	var direction = "R"; // L,R,T,B
 
-function rndm()
-{
-	var a = Math.round(Math.random()*10)
-	if(a<=9)
-		return a;
-	else
-		return rndm();
-}
-function prepareFood()
-{
-	var row = rndm();
-	var clm = rndm();
-	try{
-		if(table.children[0].children[row].children[clm].getAttribute("class") !== "active")
-			return [row,clm];
+	function rndm()
+	{
+		var a = Math.round(Math.random()*10)
+		if(a<=9)
+			return a;
 		else
-			return prepareFood();
-	}catch(e){return prepareFood()}
-}
-function setFood()
-{
-	foodLoc = prepareFood();
-	table.children[0].children[foodLoc[0]].children[foodLoc[1]].setAttribute("class","food");
-}
-setFood()
-function moveSnake()
-{
-	if(direction == "L")
-		active[1] -= 1;
-	if(direction == "R")
-		active[1] += 1;
-	if(direction == "T")
-		active[0] -= 1;
-	if(direction == "B")
-		active[0] += 1;
-	
-	if(JSON.stringify(foodLoc) !== JSON.stringify([active[0],active[1]]))	
+			return rndm();
+	}
+	function prepareFood()
 	{
-		uncolor(snake[0][0],snake[0][1])
-		snake.splice(0,1)
+		var row = rndm();
+		var clm = rndm();
+		try{
+			if(table.children[0].children[row].children[clm].getAttribute("class") !== "active")
+				return [row,clm];
+			else
+				return prepareFood();
+		}catch(e){return prepareFood()}
 	}
-	else
-		setFood();
-	if(~JSON.stringify(snake).indexOf(JSON.stringify(active)))
+	function setFood()
 	{
-		clearInterval(si);
-		alert("Aaaach");
+		foodLoc = prepareFood();
+		table.children[0].children[foodLoc[0]].children[foodLoc[1]].setAttribute("class","food");
 	}
-	else
+	setFood()
+	function moveSnake()
 	{
-		colorTbl(active[0],active[1])
-		snake.push([active[0],active[1]])
+		if(direction == "L")
+			active[1] -= 1;
+		if(direction == "R")
+			active[1] += 1;
+		if(direction == "T")
+			active[0] -= 1;
+		if(direction == "B")
+			active[0] += 1;
+		
+		if(JSON.stringify(foodLoc) !== JSON.stringify([active[0],active[1]]))	
+		{
+			uncolor(snake[0][0],snake[0][1])
+			snake.splice(0,1)
+		}
+		else
+			setFood();
+		if(~JSON.stringify(snake).indexOf(JSON.stringify(active)))
+		{
+			clearInterval(si);
+			alert("Aaaach");
+		}
+		else
+		{
+			colorTbl(active[0],active[1])
+			snake.push([active[0],active[1]])
+		}
 	}
-}
 
-snake.forEach((v,i)=>colorTbl(v[0],v[1]))
+	snake.forEach((v,i)=>colorTbl(v[0],v[1]))
 
-function colorTbl(...tbl)
-{
-	try{
-		table.children[0].children[tbl[0]].children[tbl[1]].setAttribute("class","active")
+	function colorTbl(...tbl)
+	{
+		try{
+			table.children[0].children[tbl[0]].children[tbl[1]].setAttribute("class","active")
+		}
+		catch(e){clearInterval(si);alert("BOOM")}
 	}
-	catch(e){clearInterval(si);alert("BOOM")}
-}
 
-function uncolor(...tbl)
-{
-	table.children[0].children[tbl[0]].children[tbl[1]].removeAttribute("class")
-}
+	function uncolor(...tbl)
+	{
+		table.children[0].children[tbl[0]].children[tbl[1]].removeAttribute("class")
+	}
 
-var si = setInterval(moveSnake,500);
+	var si = setInterval(moveSnake,500);
+}
     </script>
 </html>
