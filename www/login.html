@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" 	content="Arun Kumar">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<title>MyDiary Login</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<style>
+		.borderX{
+			border: 1px solid lightblue;
+			margin-top: 70px;	
+			background-color: whitesmoke;
+		}
+		.bg-gray{
+			background-color: lightgray;
+		}
+		.forgot-password {
+			text-decoration: underline;
+			color: #888;
+		}
+		.nav-active {
+			color: #029f5b;
+			border-bottom: 2px solid blue;
+		}
+		.nav-link {
+			text-decoration: none;
+			
+			font-weight: bold;
+			font-size: 15px;
+			-webkit-transition: all 0.1s linear;
+			-moz-transition: all 0.1s linear;
+			transition: all 0.1s linear;
+		}
+		</style>
+	</head>
+<body topmargin="0" rightmargin="0" bottommargin="0" leftmargin="0" class="bg-gray">
+	<div class="container-fluid">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 borderX" id="loginDialog" onkeypress="if(event.keyCode == 13){login()}">
+				<div class="simplecontainer" style="margin:1em">
+						
+					<div class="Heading row">
+						<div class="col-md-12">
+							<h1 class="text-center login-title">MyDiary</h1>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+							<div class="text-center nav-active nav-link">
+								Login
+							</div>
+						</div>
+						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+							<div class="text-center nav-link">
+								Register
+							</div>
+						</div>
+					</div>
+					<br />
+					
+					<br />
+					<div class="v_layout">
+						<label class="v_label" for="inputName">
+							Email address
+						</label>
+						<div class="fieldsbox">
+							<input id="inputName" class="form-control placeholder="" value="" type="text" placeholder="Email address" required />
+						</div>
+					</div>
+					<div class="v_layout">
+						<label class="v_label" for="inputPassword">
+							Password
+						</label>
+						<div class="fieldsbox">
+							<input id="inputPassword" class="form-control placeholder="" value="" type="password" placeholder="Password" required />
+						</div>
+					</div>
+					<div class="v_layout">
+						<div class="row">
+							<div class="offset-xs-6 offset-sm-6 offset-md-6 offset-lg-6 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<div class="text-center">
+									<a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="v_layout">
+						<button id="btnLogin" type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
+					</div>
+					<br />
+
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript">
+					
+				
+			$(function() {
+				var a = document.cookie.split("SAMLart=").length;
+				if(a === 2)
+				{
+					window.location = "index.html";
+				}
+				$("#btnLogin").bind("click", login);
+				$("#inputName").focus();
+			});
+
+			function login() {
+				$.cordys.authentication.sso.authenticate($("#inputName").val(), $("#inputPassword").val()).done(function(){
+				var a = document.cookie.split("SAMLart=").length;
+				if(a === 2)
+				  {
+					  var urlData = location.href.substr(location.href.indexOf("?")+1,location.href.length);
+					  var page = urlData.split("#refScrren#")[1];
+						if(page != undefined)
+						{
+							window.location = page;
+						}
+						else
+						{
+							window.location = "index.html";
+						}
+				  }
+					else
+					{
+					window.location = "login.html";
+					}
+				});
+			}
+		</script>
+</html>
